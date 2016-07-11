@@ -13,6 +13,7 @@ function translateNumber(inputNumber) {
         if (n < 0) {
             n = 0;
         }
+
         triplets[k] = number.slice(n, i);
     }
     for (j = triplets.length - 1; j >= 0; j--) {
@@ -63,7 +64,6 @@ function translateThreeDigits(threeDigits) {
     if (thirdDigit == 0) {
         return translateTwoDigits(threeDigits);
     } else {
-
         if (twoDigits == 0) {
             return words[thirdDigit + 26];
         } else {
@@ -84,11 +84,9 @@ function translateLargeNumbers(tripletsNumber, triplet) {
     switch(tripletsNumber) {
         case 0: return tripletInWords;
         case 1:
-
             if (Math.floor(triplet / 10) % 10 == 1) {
                 return tripletInWords + ' ' + largeNumbers[tripletsNumber];
             } else {
-
                 switch(triplet % 10) {
                     case 1: return tripletInWords.slice(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
                     case 2: return tripletInWords.slice(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
@@ -98,11 +96,9 @@ function translateLargeNumbers(tripletsNumber, triplet) {
                 }
             }
         default:
-
             if (Math.floor(triplet / 10) % 10 == 1) {
                 return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
             } else {
-
                 switch(triplet % 10) {
                     case 1: return tripletInWords + ' ' + largeNumbers[tripletsNumber];
                     case 2: return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'а';
