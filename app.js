@@ -1,3 +1,17 @@
+var words = [
+        ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять', 'одиннадцать',
+        'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
+        'девятнадцать'],
+        ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
+        ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот']
+    ],
+    largeNumbers = ['', 'тысяч', 'миллион', 'миллиард', 'триллион', 'квадриллион', 'квинтиллион', 'секстиллион',
+    'септиллион', 'октиллион', 'нониллион', 'дециллион', 'ундециллион', 'додециллион', 'тредециллион',
+    'кваттуордециллион', 'квиндециллион', 'седециллион', 'септдециллион', 'октодециллион', 'новемдециллион',
+    'вигинтиллион', 'анвигинтиллион', 'дуовигинтиллион', 'тревигинтиллион', 'кватторвигинтиллион', 'квинвигинтиллион',
+    'сексвигинтиллион', 'септемвигинтиллион', 'октовигинтиллион', 'новемвигинтиллион', 'тригинтиллион',
+    'антригинтиллион', 'дуотригинтиллион'];
+
 function translateNumber(inputNumber) {
     var number = String(inputNumber),
         translation = '',
@@ -10,7 +24,7 @@ function translateNumber(inputNumber) {
     for (i = number.length, k = 0; i > 0; i = i -3, k++) {
         n = i - 3;
         n = n < 0 ? 0 : n;
-        triplets[k] = number.slice(n, i);
+        triplets[k] = number.substring(n, i);
     }
 
     for (j = triplets.length - 1; j >= 0; j--) {
@@ -26,46 +40,33 @@ function translateNumber(inputNumber) {
     return translation;
 }
 
-function translateThreeDigits(digits) {
-    var words = [
-            ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять', 'одиннадцать',
-            'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
-            'девятнадцать'],
-            ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
-            ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот']
-        ],
-        result = '';
+function translateThreeDigitNumber(number) {
+    var translation = '';
 
-        if (digits.length == 3) {
-            result += words[2][digits[0]];
-            digits = digits.slice(1, 3);
+        if (number.length == 3) {
+            translation += words[2][number[0]];
+            number = number.substring(1, 3);
 
-            if (digits != 0 && result !== '') {
-                result += ' ';
+            if (number != 0 && translation !== '') {
+                translation += ' ';
             }
         }
 
-        if (digits < 20) {
-            result += words[0][Number(digits)];
+        if (number < 20) {
+            translation += words[0][Number(number)];
         } else {
-            result += words[1][digits[0]];
+            translation += words[1][number[0]];
 
-            if (digits[1] != 0) {
-                result += ' ' + words[0][digits[1]];
+            if (number[1] != 0) {
+                translation += ' ' + words[0][number[1]];
             }
         }
 
-        return result;
+        return translation;
 }
 
 function translateLargeNumbers(tripletsNumber, triplet) {
-    var largeNumbers = ['', 'тысяч', 'миллион', 'миллиард', 'триллион', 'квадриллион', 'квинтиллион', 'секстиллион',
-        'септиллион', 'октиллион', 'нониллион', 'дециллион', 'ундециллион', 'додециллион', 'тредециллион',
-        'кваттуордециллион', 'квиндециллион', 'седециллион', 'септдециллион', 'октодециллион', 'новемдециллион',
-        'вигинтиллион', 'анвигинтиллион', 'дуовигинтиллион', 'тревигинтиллион', 'кватторвигинтиллион', 'квинвигинтиллион',
-        'сексвигинтиллион', 'септемвигинтиллион', 'октовигинтиллион', 'новемвигинтиллион', 'тригинтиллион',
-        'антригинтиллион', 'дуотригинтиллион'],
-        tripletInWords = translateThreeDigits(triplet);
+    var tripletInWords = translateThreeDigitNumber(triplet);
 
     switch(tripletsNumber) {
         case 0:
@@ -76,9 +77,9 @@ function translateLargeNumbers(tripletsNumber, triplet) {
             } else {
                 switch(triplet % 10) {
                     case 1:
-                        return tripletInWords.slice(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
+                        return tripletInWords.substring(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
                     case 2:
-                        return tripletInWords.slice(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
+                        return tripletInWords.substring(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
                     case 3:
                     case 4:
                         return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'и';
