@@ -67,7 +67,7 @@ function translateThreeDigitNumber(number) {
 
 function translateLargeNumbers(tripletsNumber, triplet) {
     var tripletInWords = translateThreeDigitNumber(triplet),
-    translation;
+        translation;
 
     switch(tripletsNumber) {
         case 0:
