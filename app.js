@@ -66,41 +66,51 @@ function translateThreeDigitNumber(number) {
 }
 
 function translateLargeNumbers(tripletsNumber, triplet) {
-    var tripletInWords = translateThreeDigitNumber(triplet);
+    var tripletInWords = translateThreeDigitNumber(triplet),
+    translation;
 
     switch(tripletsNumber) {
         case 0:
-            return tripletInWords;
+            translation = tripletInWords;
+            break;
         case 1:
             if (Math.floor(triplet / 10) % 10 == 1) {
-                return tripletInWords + ' ' + largeNumbers[tripletsNumber];
+                translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
             } else {
                 switch(triplet % 10) {
                     case 1:
-                        return tripletInWords.substring(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
+                        translation = tripletInWords.substring(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
+                        break;
                     case 2:
-                        return tripletInWords.substring(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
+                        translation = tripletInWords.substring(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
+                        break;
                     case 3:
                     case 4:
-                        return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'и';
+                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'и';
+                        break;
                     default:
-                        return tripletInWords + ' ' + largeNumbers[tripletsNumber];
+                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
                 }
             }
+            break;
         default:
             if (Math.floor(triplet / 10) % 10 == 1) {
-                return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
+                translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
             } else {
                 switch(triplet % 10) {
                     case 1:
-                        return tripletInWords + ' ' + largeNumbers[tripletsNumber];
+                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
+                        break;
                     case 2:
                     case 3:
                     case 4:
-                        return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'а';
+                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'а';
+                        break;
                     default:
-                        return tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
+                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
                 }
             }
     }
+
+    return translation;
 }
