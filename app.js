@@ -43,24 +43,24 @@ function translateNumber(inputNumber) {
 function translateThreeDigitNumber(number) {
     var translation = '';
 
-        if (number.length == 3) {
-            translation += words[2][number[0]];
-            number = number.substring(1, 3);
+    if (number.length == 3) {
+        translation += words[2][number[0]];
+        number = number.substring(1, 3);
 
-            if (number != 0 && translation !== '') {
-                translation += ' ';
-            }
+        if (number != 0 && translation !== '') {
+            translation += ' ';
         }
+    }
 
-        if (number < 20) {
-            translation += words[0][Number(number)];
-        } else {
-            translation += words[1][number[0]];
+    if (number < 20) {
+        translation += words[0][Number(number)];
+    } else {
+        translation += words[1][number[0]];
 
-            if (number[1] != 0) {
-                translation += ' ' + words[0][number[1]];
-            }
+        if (number[1] != 0) {
+            translation += ' ' + words[0][number[1]];
         }
+    }
 
         return translation;
 }
