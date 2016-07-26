@@ -1,18 +1,158 @@
-var words = [
-        ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять', 'одиннадцать',
-        'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
-        'девятнадцать'],
-        ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
-        ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот']
-    ],
-    largeNumbers = ['', 'тысяч', 'миллион', 'миллиард', 'триллион', 'квадриллион', 'квинтиллион', 'секстиллион',
-    'септиллион', 'октиллион', 'нониллион', 'дециллион', 'ундециллион', 'додециллион', 'тредециллион',
-    'кваттуордециллион', 'квиндециллион', 'седециллион', 'септдециллион', 'октодециллион', 'новемдециллион',
-    'вигинтиллион', 'анвигинтиллион', 'дуовигинтиллион', 'тревигинтиллион', 'кватторвигинтиллион', 'квинвигинтиллион',
-    'сексвигинтиллион', 'септемвигинтиллион', 'октовигинтиллион', 'новемвигинтиллион', 'тригинтиллион',
-    'антригинтиллион', 'дуотригинтиллион'];
+var languages = {
+    'rus': {
+        words: [
+            ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять', 'одиннадцать',
+            'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
+            'девятнадцать'],
+            ['', '', 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто'],
+            ['', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот']
+        ],
+        largeNumbers: ['', 'тысяч', 'миллион', 'миллиард', 'триллион', 'квадриллион', 'квинтиллион', 'секстиллион',
+        'септиллион', 'октиллион', 'нониллион', 'дециллион', 'ундециллион', 'додециллион', 'тредециллион',
+        'кваттуордециллион', 'квиндециллион', 'седециллион', 'септдециллион', 'октодециллион', 'новемдециллион',
+        'вигинтиллион', 'анвигинтиллион', 'дуовигинтиллион', 'тревигинтиллион', 'кватторвигинтиллион', 'квинвигинтиллион',
+        'сексвигинтиллион', 'септемвигинтиллион', 'октовигинтиллион', 'новемвигинтиллион', 'тригинтиллион',
+        'антригинтиллион', 'дуотригинтиллион'],
+        errorMessages: ['Ошибка! Пожалуйста, введите целое положительное число.',
+        'Ошибка! Слишком большое число.'],
 
-function translateNumber(inputNumber) {
+        translateThreeDigitNumber: function(number) {
+            var translation = '';
+
+            if (number.length == 3) {
+                translation += this.words[2][number[0]];
+                number = number.substring(1, 3);
+
+                if (number != 0 && translation !== '') {
+                    translation += ' ';
+                }
+            }
+
+            if (number < 20) {
+                translation += this.words[0][Number(number)];
+            } else {
+                translation += this.words[1][number[0]];
+
+                if (number[1] != 0) {
+                    translation += ' ' + this.words[0][number[1]];
+                }
+            }
+
+                return translation;
+        },
+
+        translateLargeNumbers: function(tripletsNumber, triplet) {
+            var tripletInWords = this.translateThreeDigitNumber(triplet),
+                translation;
+
+            switch(tripletsNumber) {
+                case 0:
+                    translation = tripletInWords;
+                    break;
+                case 1:
+                    if (Math.floor(triplet / 10) % 10 == 1) {
+                        translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber];
+                    } else {
+                        switch(triplet % 10) {
+                            case 1:
+                                translation = tripletInWords.substring(0, tripletInWords.length - 2) + 'на' + ' ' + this.largeNumbers[tripletsNumber] + 'а';
+                                break;
+                            case 2:
+                                translation = tripletInWords.substring(0, tripletInWords.length - 1) + 'е' + ' ' + this.largeNumbers[tripletsNumber] + 'и';
+                                break;
+                            case 3:
+                            case 4:
+                                translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber] + 'и';
+                                break;
+                            default:
+                                translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber];
+                        }
+                    }
+                    break;
+                default:
+                    if (Math.floor(triplet / 10) % 10 == 1) {
+                        translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber] + 'ов';
+                    } else {
+                        switch(triplet % 10) {
+                            case 1:
+                                translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber];
+                                break;
+                            case 2:
+                            case 3:
+                            case 4:
+                                translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber] + 'а';
+                                break;
+                            default:
+                                translation = tripletInWords + ' ' + this.largeNumbers[tripletsNumber] + 'ов';
+                        }
+                    }
+            }
+
+            return translation;
+        }
+    },
+
+    'eng': {
+        words: [
+            ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
+            'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'],
+            ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'],
+        ],
+        largeNumbers: ['', 'thousand', 'million', 'billion', 'trillion', 'quadrillion', 'quintillion', 'sextillion',
+        'septillion', 'octillion', 'nonillion', 'decillion', 'undecillion', 'duodecillion', 'tredecillion',
+        'quattuordecillion', 'quinquadecillion', 'sedecillion', 'septendecillion', 'octodecillion', 'novendecillion',
+        'vigintillion', 'unvigintillion', 'duovigintillion', 'tresvigintillion', 'quattuorvigintillion',
+        'quinquavigintillion', 'sesvigintillion', 'septemvigintillion', 'octovigintillion', 'novemvigintillion',
+        'trigintillion', 'untrigintillion', 'duotrigintillion', 'trestrigintillion', 'quattuortrigintillion',
+        'quinquatrigintillion', 'sestrigintillion', 'septentrigintillion', 'octotrigintillion', 'noventrigintillion',
+        'quadragintillion'],
+        errorMessages: ['Error! Please enter a positive integer.', 'Error! Number is too big.'],
+
+        translateThreeDigitNumber: function(number) {
+            var translation = '';
+
+            if (number.length == 3) {
+                translation += this.words[0][number[0]];
+                number = number.substring(1, 3);
+
+                if (translation !== '') {
+                    translation += ' hundred';
+                    if (number != 0) {
+                        translation += ' and ';
+                    }
+                } else {
+                    if (number != 0) {
+                        translation += 'and ';
+                    }
+                }
+            }
+
+            if (number < 20) {
+                translation += this.words[0][Number(number)];
+            } else {
+                translation += this.words[1][number[0]];
+
+                if (number[1] != 0) {
+                    translation += '-' + this.words[0][number[1]];
+                }
+            }
+
+                return translation;
+        },
+
+        translateLargeNumbers: function(tripletsNumber, triplet) {
+            var translation = this.translateThreeDigitNumber(triplet);
+
+            if (tripletsNumber > 0) {
+                translation += ' ' + this.largeNumbers[tripletsNumber];
+            }
+
+            return translation;
+        }
+    }
+};
+
+function translateNumber(inputNumber, lang) {
     var number = String(inputNumber),
         translation = '',
         triplets = [],
@@ -20,6 +160,12 @@ function translateNumber(inputNumber) {
         k,
         n,
         j;
+
+    number = validateNumber(number, lang);
+
+    if (number <= 0) {
+        return languages[lang].errorMessages[-1 * number];
+    }
 
     for (i = number.length, k = 0; i > 0; i = i -3, k++) {
         n = i - 3;
@@ -31,86 +177,27 @@ function translateNumber(inputNumber) {
         if (triplets[j] == 0) continue;
 
         if (translation === '') {
-            translation += translateLargeNumbers(j, triplets[j]);
+            translation += languages[lang].translateLargeNumbers(j, triplets[j]);
         } else {
-            translation += ' ' + translateLargeNumbers(j, triplets[j]);
+            translation += ' ' + languages[lang].translateLargeNumbers(j, triplets[j]);
         }
     }
 
     return translation;
 }
 
-function translateThreeDigitNumber(number) {
-    var translation = '';
+function validateNumber(number, lang) {
+    var pattern = /^\d+$/;
 
-    if (number.length == 3) {
-        translation += words[2][number[0]];
-        number = number.substring(1, 3);
-
-        if (number != 0 && translation !== '') {
-            translation += ' ';
-        }
+    if (!pattern.test(number)) {
+        return 0;
     }
 
-    if (number < 20) {
-        translation += words[0][Number(number)];
-    } else {
-        translation += words[1][number[0]];
+    number = number.replace(/^0+/, '');
 
-        if (number[1] != 0) {
-            translation += ' ' + words[0][number[1]];
-        }
+    if (number.length > languages[lang].largeNumbers.length * 3) {
+        return -1;
     }
 
-        return translation;
-}
-
-function translateLargeNumbers(tripletsNumber, triplet) {
-    var tripletInWords = translateThreeDigitNumber(triplet),
-        translation;
-
-    switch(tripletsNumber) {
-        case 0:
-            translation = tripletInWords;
-            break;
-        case 1:
-            if (Math.floor(triplet / 10) % 10 == 1) {
-                translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
-            } else {
-                switch(triplet % 10) {
-                    case 1:
-                        translation = tripletInWords.substring(0, tripletInWords.length - 2) + 'на' + ' ' + largeNumbers[tripletsNumber] + 'а';
-                        break;
-                    case 2:
-                        translation = tripletInWords.substring(0, tripletInWords.length - 1) + 'е' + ' ' + largeNumbers[tripletsNumber] + 'и';
-                        break;
-                    case 3:
-                    case 4:
-                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'и';
-                        break;
-                    default:
-                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
-                }
-            }
-            break;
-        default:
-            if (Math.floor(triplet / 10) % 10 == 1) {
-                translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
-            } else {
-                switch(triplet % 10) {
-                    case 1:
-                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber];
-                        break;
-                    case 2:
-                    case 3:
-                    case 4:
-                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'а';
-                        break;
-                    default:
-                        translation = tripletInWords + ' ' + largeNumbers[tripletsNumber] + 'ов';
-                }
-            }
-    }
-
-    return translation;
+    return number;
 }
