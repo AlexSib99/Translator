@@ -186,9 +186,5 @@ function translateNumber(inputNumber, lang) {
 function isValid(number) {
     var pattern = /^\d+$/;
 
-    if (pattern.test(number)) {
-        return true;
-    }
-
-    return false;
+    return pattern.test(number) ? true : false;
 }
