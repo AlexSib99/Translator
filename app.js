@@ -1,5 +1,5 @@
 var languages = {
-    'rus': {
+    rus: {
         words: [
             ['', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять', 'десять', 'одиннадцать',
             'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать',
@@ -38,7 +38,7 @@ var languages = {
                 }
             }
 
-                return translation;
+            return translation;
         },
 
         translateLargeNumbers: function(tripletsNumber, triplet) {
@@ -92,7 +92,7 @@ var languages = {
         }
     },
 
-    'eng': {
+    eng: {
         words: [
             ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven',
             'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'],
