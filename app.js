@@ -13,8 +13,6 @@ var languages = {
         'вигинтиллион', 'анвигинтиллион', 'дуовигинтиллион', 'тревигинтиллион', 'кватторвигинтиллион', 'квинвигинтиллион',
         'сексвигинтиллион', 'септемвигинтиллион', 'октовигинтиллион', 'новемвигинтиллион', 'тригинтиллион',
         'антригинтиллион', 'дуотригинтиллион'],
-        errorMessages: ['Ошибка! Пожалуйста, введите целое положительное число.',
-        'Ошибка! Слишком большое число.'],
 
         translateThreeDigitNumber: function(number) {
             var translation = '';
@@ -106,7 +104,6 @@ var languages = {
         'trigintillion', 'untrigintillion', 'duotrigintillion', 'trestrigintillion', 'quattuortrigintillion',
         'quinquatrigintillion', 'sestrigintillion', 'septentrigintillion', 'octotrigintillion', 'noventrigintillion',
         'quadragintillion'],
-        errorMessages: ['Error! Please enter a positive integer.', 'Error! Number is too big.'],
 
         translateThreeDigitNumber: function(number) {
             var translation = '';
@@ -161,10 +158,10 @@ function translateNumber(inputNumber, lang) {
         n,
         j;
 
-    number = validateNumber(number, lang);
+    number = number.replace(/^0+/, '');
 
-    if (number <= 0) {
-        return languages[lang].errorMessages[-1 * number];
+    if (!isValid(number) || number.length > languages[lang].largeNumbers.length * 3) {
+        return 'Error';
     }
 
     for (i = number.length, k = 0; i > 0; i = i -3, k++) {
@@ -186,18 +183,12 @@ function translateNumber(inputNumber, lang) {
     return translation;
 }
 
-function validateNumber(number, lang) {
+function isValid(number) {
     var pattern = /^\d+$/;
 
-    if (!pattern.test(number)) {
-        return 0;
+    if (pattern.test(number)) {
+        return true;
     }
 
-    number = number.replace(/^0+/, '');
-
-    if (number.length > languages[lang].largeNumbers.length * 3) {
-        return -1;
-    }
-
-    return number;
+    return false;
 }
